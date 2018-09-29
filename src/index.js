@@ -1,37 +1,27 @@
 module.exports = function check(str, bracketsConfig) {
-    var brackets = [];
-    var str = str.split('');
-    var bool;
-    for (var i = 0; i < bracketsConfig.length; i++) {
-        var count_arr = [];
-        count_arr = bracketsConfig[i];
-        for (var j = 0; j < count_arr.length; j++) {
-            brackets.push(count_arr[j]);
-        }
-    }
 
-    var arr_ch = [];
-    var arr_noch = [];
-    for (var i = 0; i < brackets.length; i++) {
-        if (i % 2 == 0)
-            arr_ch.push(brackets[i]);
-        else arr_noch.push(brackets[i]);
-    }
-     var open=0;
-    var close=0;
-    for (var i = 0; i < str.length; i++) {
-        for (var j = 0; j < arr_ch.length; j++) {
-            if (str[i] == arr_ch[j])
-                open +=1;
-        }
-            for (var k = 0; k < arr_noch.length; k++) {
-                if (str[i] == arr_noch[k])
-                    close +=1;
+    const STR = str.split('');
+    let tmp_arr = [];
+    let bool = true;
+
+
+    top:  for (let i = 0; i < STR.length; i++) {
+        for (let j = 0; j < bracketsConfig.length; j++) {
+            if (STR[i] === bracketsConfig[j][0]) {
+                tmp_arr.unshift(bracketsConfig[j][1])
             }
+            if (STR[i] === bracketsConfig[j][1] && STR[i] !== tmp_arr[0]) {
+                bool = false;
+                break top;
+            }
+            else if (STR[i] === bracketsConfig[j][1] && STR[i] === tmp_arr[0]) {
+                tmp_arr.splice(0, 1)
 
+            }
         }
-if(open==close)
-    bool=true;
-else bool = false;
-return bool;
+    }
+    if (tmp_arr.length > 0)
+        bool = false
+
+    return bool;
 }
